@@ -1,19 +1,25 @@
 package org.example;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class Main {
+
     public static void main(String[] args) {
-        // Press Alt+Entrée with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // JDBC URL, username, and password of PostgreSQL server
+        String url = System.getenv("url");
+        String user = System.getenv("user");
+        String password = System.getenv("password");
 
-        // Press Maj+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Test the database connection
+        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+            System.out.println("Connection to the database established successfully.");
 
-            // Press Maj+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+            // Add your code to perform database operations here
+
+        } catch (SQLException e) {
+            System.err.println("Error connecting to the database: " + e.getMessage());
         }
     }
 }
