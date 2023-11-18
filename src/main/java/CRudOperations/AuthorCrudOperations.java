@@ -24,7 +24,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
         List<Author> authors = new ArrayList<>();
 
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM authors")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM author")) {
 
             while (resultSet.next()) {
                 int id= resultSet.getInt("id");
@@ -44,7 +44,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
     @Override
     public List<Author> saveAll(List<Author> toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO authors (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO author (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             for (Author author : toSave) {
                 statement.setInt(1, author.getId());
@@ -71,7 +71,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
     @Override
     public Author save(Author toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO authors (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO author (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, toSave.getId());
             statement.setString(2, toSave.getName());
@@ -94,7 +94,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
     @Override
     public Author delete(Author toDelete) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM authors WHERE id = ?")) {
+                "DELETE FROM author WHERE id = ?")) {
 
             statement.setInt(1, toDelete.getId());
             statement.executeUpdate();

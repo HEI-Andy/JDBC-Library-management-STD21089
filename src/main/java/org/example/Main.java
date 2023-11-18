@@ -1,25 +1,36 @@
 package org.example;
 
+import CRudOperations.AuthorCrudOperations;
+import CRudOperations.BookCrudOperations;
+import CRudOperations.SubscribersCrudOperations;
+import Model.Author;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        // JDBC URL, username, and password of PostgreSQL server
-        String url = System.getenv("url");
-        String user = System.getenv("user");
-        String password = System.getenv("password");
+        AuthorCrudOperations authorCrudOperations= new AuthorCrudOperations();
+        BookCrudOperations bookCrudOperations= new BookCrudOperations();
+        SubscribersCrudOperations subscribersCrudOperations= new SubscribersCrudOperations();
 
-        // Test the database connection
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            System.out.println("Connection to the database established successfully.");
+        List<Author> authorsToSave = new ArrayList<>();
+        authorsToSave.add(new Author(1, "John Doe", 'M'));
+        authorsToSave.add(new Author(2, "Jane Smith", 'F'));
 
-            // Add your code to perform database operations here
+        List<Author> savedAuthors = authorCrudOperations.saveAll(authorsToSave);
 
-        } catch (SQLException e) {
-            System.err.println("Error connecting to the database: " + e.getMessage());
+        for (Author author : savedAuthors) {
+            System.out.println("Saved Author: " + author);
+        }
+
+        List<Author> listOfAuthor= authorCrudOperations.findAll();
+        for (Author author : listOfAuthor){
+            System.out.println("List of authors: "+author);
         }
     }
 }
