@@ -44,7 +44,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
     @Override
     public List<Author> saveAll(List<Author> toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO author (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO author (id, name, sex) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
             for (Author author : toSave) {
                 statement.setInt(1, author.getId());
@@ -52,8 +52,6 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
                 statement.setString(3,String.valueOf(author.getSex()));
                 statement.addBatch();
             }
-
-            statement.executeBatch();
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 while (generatedKeys.next()) {
@@ -76,7 +74,6 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
             statement.setInt(1, toSave.getId());
             statement.setString(2, toSave.getName());
             statement.setString(3, String.valueOf(toSave.getSex()));
-            statement.executeUpdate();
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {

@@ -50,8 +50,6 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
                 statement.addBatch();
             }
 
-            statement.executeBatch();
-
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 while (generatedKeys.next()) {
                     toSave.get(generatedKeys.getRow() - 1).setId(generatedKeys.getInt(1));
@@ -73,7 +71,6 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
                 statement.setInt(1, toSave.getId());
                 statement.setString(2, toSave.getName());
                 statement.setString(3, toSave.getRef());
-                statement.executeUpdate();
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {

@@ -56,8 +56,6 @@ public class BookCrudOperations implements CrudOperations<Book> {
                 statement.addBatch();
             }
 
-            statement.executeBatch();
-
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 while (generatedKeys.next()) {
                     toSave.get(generatedKeys.getRow() - 1).setId(generatedKeys.getInt(1));
@@ -82,7 +80,7 @@ public class BookCrudOperations implements CrudOperations<Book> {
             statement.setInt(3,toSave.getPageNumber());
             statement.setString(4,toSave.getTopic());
             statement.setDate(5,toSave.getRealeseDate());
-            statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

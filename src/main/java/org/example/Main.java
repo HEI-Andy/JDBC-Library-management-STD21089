@@ -5,6 +5,7 @@ import CRudOperations.BookCrudOperations;
 import CRudOperations.SubscribersCrudOperations;
 import Model.Author;
 import Model.Book;
+import Model.Subscribers;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -82,6 +83,44 @@ public class Main {
          } else {
          System.out.println("\nNo books to delete.");
          }
+
+         System.out.println("All subscribers:");
+         List<Subscribers> allSubscribers = subscribersCrudOperations.findAll();
+         for (Subscribers subscriber : allSubscribers) {
+         System.out.println(subscriber);
+         }
+
+         List<Subscribers> subscribersToSave = new ArrayList<>();
+         subscribersToSave.add(new Subscribers(1, "New Subscriber 1", "Reference 1"));
+         subscribersToSave.add(new Subscribers(2, "New Subscriber 2", "Reference 2"));
+
+         System.out.println("saving All subscribers:");
+         List<Subscribers> allSubscribersBeforeSaving = subscribersCrudOperations.findAll();
+         for (Subscribers subscriber : allSubscribersBeforeSaving) {
+         System.out.println(subscriber);
+         }
+
+        // Save a subscriber
+         Subscribers subscriberToSave = new Subscribers(3, "New Subscriber 3", "Reference 3");
+
+         System.out.println("\nSaving a new subscriber:");
+         Subscribers savedSubscriber = subscribersCrudOperations.save(subscriberToSave);
+         System.out.println("New subscriber saved: " + savedSubscriber);
+
+        System.out.println("All subscribers before deletion:");
+        List<Subscribers> allSubscribersBeforeDeletion = subscribersCrudOperations.findAll();
+        for (Subscribers subscriber : allSubscribersBeforeDeletion) {
+            System.out.println(subscriber);
+        }
+        if (!allSubscribersBeforeDeletion.isEmpty()) {
+            // Delete a subscriber
+            Subscribers subscriberToDelete = allSubscribersBeforeDeletion.get(0);
+            System.out.println("\nDeleting a subscriber:");
+            subscribersCrudOperations.delete(subscriberToDelete);
+            System.out.println("Subscriber deleted: " + subscriberToDelete);
+        } else {
+            System.out.println("\nNo subscribers to delete.");
+        }
     }
 
 }
