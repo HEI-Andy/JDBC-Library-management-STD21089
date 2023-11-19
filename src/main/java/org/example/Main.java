@@ -1,8 +1,8 @@
 package org.example;
 
-import CRudOperations.AuthorCrudOperations;
-import CRudOperations.BookCrudOperations;
-import CRudOperations.SubscribersCrudOperations;
+import CrudOperations.AuthorCrudOperations;
+import CrudOperations.BookCrudOperations;
+import CrudOperations.SubscribersCrudOperations;
 import Model.Author;
 import Model.Book;
 import Model.Subscribers;
@@ -46,7 +46,7 @@ public class Main {
          System.out.println(author);
          }
          if (!allAuthorsBeforeDeletion.isEmpty()) {
-         Author authorToDelete = allAuthorsBeforeDeletion.get(1);
+         Author authorToDelete = allAuthorsBeforeDeletion.get(0);
          System.out.println("\nDeleting an author:");
          authorCrudOperations.delete(authorToDelete);
          System.out.println("Author deleted: " + authorToDelete);
