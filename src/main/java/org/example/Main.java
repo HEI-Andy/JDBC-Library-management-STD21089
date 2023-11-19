@@ -5,7 +5,6 @@ import CRudOperations.BookCrudOperations;
 import CRudOperations.SubscribersCrudOperations;
 import Model.Author;
 import Model.Book;
-import Model.Subscribers;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -52,6 +51,36 @@ public class Main {
          System.out.println("Author deleted: " + authorToDelete);
          } else {
          System.out.println("\nNo authors to delete.");
+         }
+
+         System.out.println("All books:");
+         List<Book> allBooks = bookCrudOperations.findAll();
+         for (Book book : allBooks) {
+         System.out.println(book);
+         }
+
+         List<Book> booksToSave = new ArrayList<>();
+         booksToSave.add(new Book(1, "Book 1", 150, "Topic 1", Date.valueOf("2023-02-01")));
+         booksToSave.add(new Book(2, "Book 2", 180, "Topic 2", Date.valueOf("2023-03-01")));
+
+         List<Book> savedBooks = bookCrudOperations.saveAll(booksToSave);
+         System.out.println("New books saved:");
+         for (Book book : savedBooks) {
+         System.out.println(book);
+         }
+
+         Book newBook = new Book(1, "New Book", 200, "New Topic", Date.valueOf("2023-01-01"));
+         bookCrudOperations.save(newBook);
+         System.out.println("New book added: " + newBook);
+
+         List<Book> allBooksBeforeDeletion = bookCrudOperations.findAll();
+         if (!allBooksBeforeDeletion.isEmpty()) {
+         Book bookToDelete = allBooksBeforeDeletion.get(0);
+         System.out.println("\nDeleting a book:");
+         bookCrudOperations.delete(bookToDelete);
+         System.out.println("Book deleted: " + bookToDelete);
+         } else {
+         System.out.println("\nNo books to delete.");
          }
     }
 
