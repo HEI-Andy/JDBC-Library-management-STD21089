@@ -71,7 +71,7 @@ public class AuthorCrudOperations implements CrudOperations<Author> {
     @Override
     public Author save(Author toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO author (id,name,sex) VALUES (?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO author (id, name, sex) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, toSave.getId());
             statement.setString(2, toSave.getName());

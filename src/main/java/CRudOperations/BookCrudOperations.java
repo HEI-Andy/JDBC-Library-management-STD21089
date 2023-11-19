@@ -23,7 +23,7 @@ public class BookCrudOperations implements CrudOperations<Book> {
         List<Book> books = new ArrayList<>();
 
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM books")) {
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM book")) {
 
             while (resultSet.next()) {
                 int id= resultSet.getInt("id");
@@ -45,7 +45,7 @@ public class BookCrudOperations implements CrudOperations<Book> {
     @Override
     public List<Book> saveAll(List<Book> toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO books (id, book_name, page_number, topic, release_date) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO book (id, book_name, page_number, topic, release_date) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
             for (Book book : toSave) {
                 statement.setInt(1, book.getId());
@@ -66,7 +66,6 @@ public class BookCrudOperations implements CrudOperations<Book> {
 
         } catch (SQLException e) {
             throw new RuntimeException();
-            // Handle exceptions appropriately
         }
 
         return toSave;
@@ -77,7 +76,7 @@ public class BookCrudOperations implements CrudOperations<Book> {
     public Book save(Book toSave) {
         try{
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO books (id, book_name, page_number, topic, release_date) VALUES (?, ?, ?, ?, ?)");
+                    "INSERT INTO book (id, book_name, page_number, topic, release_date) VALUES (?, ?, ?, ?, ?)");
             statement.setInt(1, toSave.getId());
             statement.setString(2, toSave.getBookName());
             statement.setInt(3,toSave.getPageNumber());
@@ -93,7 +92,7 @@ public class BookCrudOperations implements CrudOperations<Book> {
     @Override
     public Book delete(Book toDelete) {
         try{
-            PreparedStatement statement = connection.prepareStatement("delete from books where id = ?");
+            PreparedStatement statement = connection.prepareStatement("delete from book where id = ?");
             statement.setInt(1,toDelete.getId());
             statement.executeUpdate();
         } catch (SQLException e) {

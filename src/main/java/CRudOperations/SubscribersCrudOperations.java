@@ -28,8 +28,8 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
             while(resultSet.next()){
                 int id = resultSet.getInt("id");
                 String name= resultSet.getString("name");
-                String reference = resultSet.getString("reference");
-                Subscribers subscribers = new Subscribers(id,name,reference);
+                String ref = resultSet.getString("ref");
+                Subscribers subscribers = new Subscribers(id,name,ref);
                 listOfSubscribers.add(subscribers);
             }
         } catch (SQLException e) {
@@ -41,11 +41,12 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
     @Override
     public List<Subscribers> saveAll(List<Subscribers> toSave) {
         try (PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO subscribers (name, reference) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                "INSERT INTO subscribers (id, name, reference) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
             for (Subscribers subscriber : toSave) {
-                statement.setString(1, subscriber.getName());
-                statement.setString(2, subscriber.getRef());
+                statement.setInt(1, subscriber.getId());
+                statement.setString(2, subscriber.getName());
+                statement.setString(3, subscriber.getRef());
                 statement.addBatch();
             }
 
@@ -58,7 +59,7 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
 
         return toSave;
@@ -67,10 +68,11 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
     @Override
     public Subscribers save(Subscribers toSave) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO subscribers (name, reference) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+                    "INSERT INTO subscribers (id, name, ref) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
 
-                statement.setString(1, toSave.getName());
-                statement.setString(2, toSave.getRef());
+                statement.setInt(1, toSave.getId());
+                statement.setString(2, toSave.getName());
+                statement.setString(3, toSave.getRef());
                 statement.executeUpdate();
 
                 try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -80,8 +82,7 @@ public class SubscribersCrudOperations implements CrudOperations<Subscribers> {
                 }
 
             } catch (SQLException e) {
-                throw new RuntimeException();
-                // Handle exceptions appropriately
+                throw new RuntimeException(e);
             }
 
             return toSave;
